@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Show contact</title>
+</head>
+<body>
+    <fieldset>
+        <label>
+            Name:
+            <input type="text" disabled value="{{ contact.name }}"
+        </label>
+        <label>
+            Surname:
+            <input type="text" disabled value="{{ contact.surname }}"
+        </label>
+        <label>
+            Description:
+            <textarea disabled>{{ contact.description }}</textarea>
+        </label>
+    </fieldset>
+    <fieldset>
+        <label>
+            City:
+            <input type="text" disabled value="{{ contact.address.city }}"
+        </label>
+        <label>
+            Street:
+            <input type="text" disabled value="{{ contact.address.street }}"
+        </label>
+        <label>
+            Address:
+            <input type="text" disabled value="{{ contact.address.building_number }}"
+        </label>
+        <label>
+            Apartment number:
+            <input type="text" disabled value="{{ contact.address.apartment_number }}"
+        </label>
+    </fieldset>
+    {% if contact.phone_set.all %}
+        <fieldset>
+            {% for phone in contact.phone_set.all %}
+                <label>
+                    Number:
+                    <input type="number" step="1" disabled value="{{ phone.number }}">
+                </label>
+                <label>
+                    Type:
+                    <input type="text" disabled value="{{ phone.get_type_display }}">
+                </label>
+            {% endfor %}
+        </fieldset>
+    {% endif %}
+    {% if contact.email_set.all %}
+        <fieldset>
+            {% for email in contact.email_set.all %}
+                <label>
+                    Email address:
+                    <input type="text" step="1" disabled value="{{ email.address }}">
+                </label>
+                <label>
+                    Type:
+                    <input type="text" disabled value="{{ email.get_type_display }}">
+                </label>
+            {% endfor %}
+        </fieldset>
+    {% endif %}
+    <form action="/modify/{{ contact.id }}" method="get">
+        <button type="submit">Modify contact</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Contacts</title>
+</head>
+<body>
+    <table>
+        {% for contact in contacts %}
+            <tr>
+                <td>
+                    <a href="/show/{{ contact.id }}">{{ contact.surname }} {{ contact.name }}</a></td>
+                <td>
+                    <form method="get" action="/modify/{{ contact.id }}">
+                        <button type="submit">Modify</button>
+                        {% csrf_token %}
+                    </form>
+                </td>
+                <td>
+                    <form method="post" action="/delete/{{ contact.id }}">
+                        <button type="submit">Delete</button>
+                        {% csrf_token %}
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    <form action="/new" method="get">
+        <button type="submit">Add new contact</button>
+    </form>
+
+    {% if messages %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    {% endif %}
+    {{ message }}
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modify contact</title>
+</head>
+<body>
+    <form method="post" action="{{ contact.id }}/removeAddress" id="delete">
+        {% csrf_token %}
+    </form>
+    <form method="post">
+        <fieldset>
+            Personal data:
+            <input type="text" name="name" placeholder="Name" value="{{ contact.name }}">
+            <input type="text" name="surname" placeholder="Surname" value="{{ contact.surname }}">
+            <textarea name="description" placeholder="Descriptions">{{ contact.description }}</textarea>
+            <button type="submit">Modify personal data</button>
+        </fieldset>
+        {% csrf_token %}
+    </form>
+
+    <form action="{{ contact.id }}/addAddress" method="post">
+        <fieldset>
+            Address:
+            <input type="text" name="city" placeholder="City" value="{{ contact.address.city }}">
+            <input type="text" name="street" placeholder="Street" value="{{ contact.address.street }}">
+            <input type="text" name="building_number" placeholder="Building number"
+                   value="{{ contact.address.building_number }}">
+            <input type="text" name="apartment_number" placeholder="Apartment number"
+                   value="{{ contact.address.apartment_number }}">
+            <button type="submit">{% if contact.address %}Modify address{% else %}Add address{% endif %}</button>
+            {% if contact.address %}
+                <button type="submit" name="delete" value="{{ contact.address.id }}" form="delete">Remove address
+                </button>
+            {% endif %}
+        </fieldset>
+        {% csrf_token %}
+    </form>
+
+
+    <fieldset>
+        Phone:
+        {% for phone in contact.phone_set.all %}
+            <form action="{{ contact.id }}/modifyPhone/{{ phone.id }}" method="post">
+                <input type="number" name="number" placeholder="Phone number" value="{{ phone.number }}">
+                <label>
+                    Type:
+                    <select name="type">
+                        <option value="0" {% if phone.type == 0 %}selected{% endif %}>mobile</option>
+                        <option value="1" {% if phone.type == 1 %}selected{% endif %}>company</option>
+                        <option value="2" {% if phone.type == 2 %}selected{% endif %}>home</option>
+                    </select>
+                </label>
+                <button type="submit">Modify phone</button>
+                {% csrf_token %}
+            </form>
+            <form action="{{ contact.id }}/deletePhone/{{ phone.id }}" method="post">
+                <button type="submit">Delete phone</button>
+                {% csrf_token %}
+            </form>
+        {% endfor %}
+        <form action="{{ contact.id }}/addPhone" method="post">
+            <input type="number" name="number" placeholder="Phone number">
+            <label>
+                Type:
+                <select name="type">
+                    <option value="0" selected>mobile</option>
+                    <option value="1">company</option>
+                    <option value="2">home</option>
+                </select>
+            </label>
+            <button type="submit">Add phone</button>
+            {% csrf_token %}
+        </form>
+    </fieldset>
+    <fieldset>
+        Email:
+        {% for email in contact.email_set.all %}
+            <form action="{{ contact.id }}/modifyEmail/{{ email.id }}" method="post">
+                <input type="email" name="address" placeholder="Email address" value="{{ email.address }}">
+                <label>
+                    Type:
+                    <select name="type">
+                        <option value="0" {% if email.type == 0 %}selected{% endif %}>private</option>
+                        <option value="1" {% if email.type == 1 %}selected{% endif %}>company</option>
+                    </select>
+                </label>
+                <button type="submit">Modify email</button>
+                {% csrf_token %}
+            </form>
+            <form action="{{ contact.id }}/deleteEmail/{{ email.id }}" method="post">
+                <button type="submit">Delete email</button>
+                {% csrf_token %}
+            </form>
+        {% endfor %}
+        <form action="{{ contact.id }}/addEmail" method="post">
+            <input type="email" name="address" placeholder="Email address">
+            <label>
+                Type:
+                <select name="type">
+                    <option value="0" selected>private</option>
+                    <option value="1">company</option>
+                </select>
+            </label>
+            <button type="submit">Add email</button>
+
+            {% csrf_token %}
+        </form>
+    </fieldset>
+    {% if messages %}
+        {% for message in messages %}
+            {{ message }}
+        {% endfor %}
+    {% endif %}
+    {{ message }}
+</body>
+</html>

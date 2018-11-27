@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add addres to {{ contact.name }} {{ contact.surname }}</title>
+</head>
+<body>
+    Add addres to {{ contact.name }} {{ contact.surname }}
+    <form method="post">
+        <input type="text" name="city" placeholder="city">
+        <input type="text" name="street" placeholder="street">
+        <input type="text" name="building_number" placeholder="building number">
+        <input type="text" name="apartment_number" placeholder="apartment number">
+        <button type="submit">Add address</button>
+        {% csrf_token %}
+    </form>
+</body>
+</html>
