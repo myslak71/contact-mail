@@ -84,7 +84,7 @@ class NewContact(View):
         number = request.POST.get('number').strip()
         phone_type = request.POST.get('phone_type').strip()
         Phone.objects.create(number=number, type=phone_type, person=contact)
-        #Email
+        # Email
         if request.POST.get('email_type').strip() not in str(EMAIL_CHOICES):
             messages.add_message(request, messages.ERROR, "Inappropriate email type value")
             return redirect('/new')
@@ -176,10 +176,10 @@ class DeleteAddress(View):
         if Person.objects.filter(pk=id).first() is None:
             messages.add_message(request, messages.ERROR, "Contact does not exist")
             return redirect('/')
-        contact = Person.objects.filter(pk=id).first()
         if contact.address is None:
             messages.add_message(request, messages.ERROR, "Address does not exist")
             return redirect('/modify/%s' % id)
+        contact = Person.objects.filter(pk=id).first()
         address = Address.objects.get(pk=contact.address.id)
         address.person_set.delete()
         messages.add_message(request, messages.INFO, "Address has been deleted")
@@ -300,3 +300,83 @@ class DeleteEmail(View):
         email.delete()
         messages.add_message(request, messages.INFO, "Email has been deleted")
         return redirect('/modify/%s' % id)
+
+
+class ShowGroups(View):
+    def get(self, request):
+        groups = Group.objects.all()
+        context = {
+            'groups': groups,
+        }
+        return render(request, 'contact_mail/show_groups.html', context)
+
+
+class AddGroup(View):
+    def get(self, request):
+        contacts = Person.objects.all()
+        context = {
+            'contacts': contacts,
+        }
+        return render(request, 'contact_mail/add_group.html', context)
+
+    def post(self, request):
+        name = request.POST.get('name').strip()
+        if Group.objects.all().filter(name=name).first() is not None:
+            messages.add_message(request, messages.ERROR, "Group with given name already exists")
+            return redirect('/groups/add')
+        group = Group.objects.create(name=name)
+        contacts_id = request.POST.getlist('contacts')
+        for contact_id in contacts_id:
+            if Person.objects.filter(pk=contact_id).first() is None:
+                continue
+            contact = Person.objects.get(pk=contact_id)
+            contact.group.add(group)
+        messages.add_message(request, messages.INFO, "Group has been created")
+        return redirect('/groups')
+
+
+class DeleteGroup(View):
+    def post(self, request, group_id):
+        if Group.objects.filter(pk=group_id).first() is None:
+            messages.add_message(request, messages.ERROR, "Group does not exist")
+            return redirect('/groups')
+        group = Group.objects.get(pk=group_id)
+        group.delete()
+        messages.add_message(request, messages.INFO, "Group has been deleted")
+        return redirect('/groups')
+
+
+class ModifyGroup(View):
+    def get(self, request, group_id):
+        if Group.objects.filter(pk=group_id).first() is None:
+            messages.add_message(request, messages.ERROR, "Group does not exist")
+            return redirect('/groups')
+        group = Group.objects.get(pk=group_id)
+        contacts = Person.objects.all()
+        context = {
+            'group': group,
+            'contacts': contacts,
+        }
+        return render(request, 'contact_mail/modify_group.html', context)
+
+    def post(self, request, group_id):
+        if Group.objects.filter(pk=group_id).first() is None:
+            messages.add_message(request, messages.ERROR, "Group does not exist")
+            return redirect('/groups')
+
+        name = request.POST.get('name').strip()
+        if name == Group.objects.get(pk=group_id).name:
+            pass
+        elif Group.objects.all().filter(name=name).first() is not None:
+            messages.add_message(request, messages.ERROR, "Group with given name already exists")
+            return redirect('/groups/add')
+        group = Group.objects.get(pk=group_id)
+        group.person_set.clear()
+        contacts_id = request.POST.getlist('contacts')
+        for contact_id in contacts_id:
+            if Person.objects.filter(pk=contact_id).first() is None:
+                continue
+            contact = Person.objects.get(pk=contact_id)
+            contact.group.add(group)
+        messages.add_message(request, messages.INFO, "Group has been modified")
+        return redirect('/groups')

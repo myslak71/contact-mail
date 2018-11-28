@@ -1,5 +1,5 @@
 from django.test import TestCase
-
+from random import randint
 # Create your tests here.
 
 PHONE_CHOICES = (
@@ -16,3 +16,6 @@ print('2' in str(PHONE_CHOICES))
 from django.core.validators import validate_email
 
 print(validate_email('kornel@gmail.com'))
+
+input('Wciśnij')
+print(randint(1, 4))

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Modify group</title>
+</head>
+<body>
+    <form method="post">
+        <label>
+            Name:
+            <input type="text" name="name" value="{{ group.name }}">
+        </label>
+        <label>
+            Contacts:
+            <select multiple name="contacts">
+                {% for contact in contacts %}
+                    <option value="{{ contact.id }}"
+                            {% if group in contact.group.all %}selected{% endif %}>{{ contact.name }} {{ contact.surname }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    <button type="submit">Modify group</button>
+        {% csrf_token %}
+    </form>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add group</title>
+</head>
+<body>
+    <form method="post">
+        <input type="text" name="name" placeholder="Name">
+        <label>
+            Contacts:
+            <select multiple name="contacts">
+                {% for contact in contacts %}
+                    <option value="{{ contact.id }}">{{ contact.name }} {{ contact.surname }}</option>
+                {% endfor %}
+            </select>
+        </label>
+        <button type="submit">Add group</button>
+        {% csrf_token %}
+    </form>
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+</body>
+</html>

@@ -34,5 +34,8 @@ urlpatterns = [
     url('^modify/(?P<id>\d+)/modifyEmail/(?P<email_id>\d+)$', ModifyEmail.as_view()),
     url('^modify/(?P<id>\d+)/addEmail$', AddEmail.as_view()),
     url('^modify/(?P<id>\d+)/deleteEmail/(?P<email_id>\d+)$', DeleteEmail.as_view()),
-
+    url('^groups$', ShowGroups.as_view()),
+    url('^groups/add$', AddGroup.as_view()),
+    url('^groups/delete/(?P<group_id>\d+)$', DeleteGroup.as_view()),
+    url('^groups/modify/(?P<group_id>\d+)$', ModifyGroup.as_view()),
 ]
