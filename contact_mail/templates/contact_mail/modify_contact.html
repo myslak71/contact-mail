@@ -45,7 +45,7 @@
                 <input type="number" name="number" placeholder="Phone number" value="{{ phone.number }}">
                 <label>
                     Type:
-                    <select name="type">
+                    <select name="phone_type">
                         <option value="0" {% if phone.type == 0 %}selected{% endif %}>mobile</option>
                         <option value="1" {% if phone.type == 1 %}selected{% endif %}>company</option>
                         <option value="2" {% if phone.type == 2 %}selected{% endif %}>home</option>
@@ -63,7 +63,7 @@
             <input type="number" name="number" placeholder="Phone number">
             <label>
                 Type:
-                <select name="type">
+                <select name="phone_type">
                     <option value="0" selected>mobile</option>
                     <option value="1">company</option>
                     <option value="2">home</option>
@@ -77,10 +77,10 @@
         Email:
         {% for email in contact.email_set.all %}
             <form action="{{ contact.id }}/modifyEmail/{{ email.id }}" method="post">
-                <input type="email" name="address" placeholder="Email address" value="{{ email.address }}">
+                <input type="email" name="email_address" placeholder="Email address" value="{{ email.address }}">
                 <label>
                     Type:
-                    <select name="type">
+                    <select name="email_type">
                         <option value="0" {% if email.type == 0 %}selected{% endif %}>private</option>
                         <option value="1" {% if email.type == 1 %}selected{% endif %}>company</option>
                     </select>
@@ -94,10 +94,10 @@
             </form>
         {% endfor %}
         <form action="{{ contact.id }}/addEmail" method="post">
-            <input type="email" name="address" placeholder="Email address">
+            <input type="email" name="email_address" placeholder="Email address">
             <label>
                 Type:
-                <select name="type">
+                <select name="email_type">
                     <option value="0" selected>private</option>
                     <option value="1">company</option>
                 </select>
