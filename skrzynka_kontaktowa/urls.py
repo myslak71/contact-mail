@@ -38,5 +38,5 @@ urlpatterns = [
     url('^groups/add$', AddGroupView.as_view()),
     url('^groups/delete/(?P<group_id>\d+)$', DeleteGroupView.as_view()),
     url('^groups/modify/(?P<group_id>\d+)$', ModifyGroupView.as_view()),
-    url('^add_picture$', AddPicture.as_view()),
+    # url('^add_picture$', AddPicture.as_view()),
 ]

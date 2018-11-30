@@ -31,7 +31,7 @@ def check_if_unsigned_int(number):
 
 def contact_exist_get(contact_id):
     contact = Person.objects.filter(pk=contact_id).first()
-    if contact is None:
+    if not contact:
         raise Http404
     return contact
 
@@ -150,7 +150,7 @@ class DeleteContactView(View):
 
 
 class ModifyContactView(BaseView):
-    FORM_FIELDS = ('name'
+    FORM_FIELDS = ('name',
                    'surname',
                    'description')
 
@@ -170,11 +170,23 @@ class ModifyContactView(BaseView):
 
         self._get_form_field_values(request)
 
+        if not self._form_valid(request):
+            return redirect('/new')
+
         contact.name, contact.surname, contact.description = self.name, self.surname, self.description
         contact.save()
 
         messages.add_message(request, messages.INFO, 'Personal data has been modified')
         return redirect('/modify/{}'.format(contact.id))
+
+    def _form_valid(self, request):
+        valid = True  # adds message for every inappropriate input
+
+        if not self.name or not self.surname:
+            messages.add_message(request, messages.ERROR, 'Name and surname are required')
+            valid = False
+
+        return valid
 
 
 class AddAddressView(BaseView):
@@ -455,10 +467,9 @@ class AddGroupView(BaseView):
 
         group = Group.objects.create(name=self.name)
         for contact_id in self.contacts:
-            if Person.objects.filter(pk=contact_id).first() is None:
-                continue
-            contact = Person.objects.get(pk=contact_id)
-            contact.group.add(group)
+            if Person.objects.filter(pk=contact_id).first():
+                contact = Person.objects.get(pk=contact_id)
+                contact.group.add(group)
 
         messages.add_message(request, messages.INFO, "Group has been created")
         return redirect('/groups')
@@ -479,7 +490,7 @@ class AddGroupView(BaseView):
 
 class DeleteGroupView(View):
     def post(self, request, group_id):
-        if Group.objects.filter(pk=group_id).first() is None:
+        if not Group.objects.filter(pk=group_id).first():
             messages.add_message(request, messages.ERROR, "Group does not exist")
             return redirect('/groups')
         group = Group.objects.get(pk=group_id)
@@ -517,12 +528,12 @@ class ModifyGroupView(BaseView):
         group = Group.objects.get(pk=group_id)
         group.name = self.name
         group.person_set.clear()
+
         for contact_id in self.contacts:
-            if Person.objects.filter(pk=contact_id).first() is None:
-                continue
-            contact = Person.objects.get(pk=contact_id)
-            contact.group.add(group)
-        group.name = self.name
+            if Person.objects.filter(pk=contact_id).first():
+                contact = Person.objects.get(pk=contact_id)
+                contact.group.add(group)
+
         group.save()
         messages.add_message(request, messages.INFO, "Group has been modified")
         return redirect('/groups')
@@ -541,3 +552,29 @@ class ModifyGroupView(BaseView):
             valid = False
 
         return valid
+
+
+class ShowGroup(View):
+    def get(self, request, group_id):
+        if Group.objects.filter(pk=group_id).first() is None:
+            messages.add_message(request, messages.ERROR, "Group does not exist")
+            return redirect('/groups')
+
+        return render(request, 'contact_mail/show_group.html', contacts)
+        
+
+class GroupSearchView(BaseView):
+
+
+    def get(self, request):
+
+    def _form_valid(self):
+        valid = True
+
+        if not self.name:
+            messages.add_message(request, messages.ERROR, "Name is required")
+            valid = False
+
+        if not self.surname:
+            messages.add_message(request, messages.ERROR, "Surname is required")
+            valid = False
