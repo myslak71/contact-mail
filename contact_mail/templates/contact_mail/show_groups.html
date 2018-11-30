@@ -8,7 +8,7 @@
     <table>
         {% for group in groups %}
             <tr>
-                <td>{{ group.name }}</td>
+                <td><a href="/groups/show/{{ group.id }}">{{ group.name }}</a></td>
                 <td>
                     <form method="get" action="/groups/modify/{{ group.id }}">
                         <button type="submit">Modify</button>

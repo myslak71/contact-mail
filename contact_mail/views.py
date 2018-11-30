@@ -554,27 +554,23 @@ class ModifyGroupView(BaseView):
         return valid
 
 
-class ShowGroup(View):
+class ShowGroupView(View):
     def get(self, request, group_id):
         if Group.objects.filter(pk=group_id).first() is None:
             messages.add_message(request, messages.ERROR, "Group does not exist")
             return redirect('/groups')
+        group = Group.objects.get(pk=group_id)
 
-        return render(request, 'contact_mail/show_group.html', contacts)
-        
+        if not request.GET.get('name') and not request.GET.get('surname'):
+            contacts = group.person_set.all()
 
-class GroupSearchView(BaseView):
+        else:
+            contacts = group.person_set.all().filter(name__contains=request.GET.get('name')).filter(
+                surname__contains='')
 
+        context = {
+            'group': group,
+            'contacts': contacts,
+        }
 
-    def get(self, request):
-
-    def _form_valid(self):
-        valid = True
-
-        if not self.name:
-            messages.add_message(request, messages.ERROR, "Name is required")
-            valid = False
-
-        if not self.surname:
-            messages.add_message(request, messages.ERROR, "Surname is required")
-            valid = False
+        return render(request, 'contact_mail/show_group.html', context)
