@@ -79,7 +79,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'contact_mail',
-        'HOST': '127.0.0.1',
+        'HOST': 'localhost',
         'USER': 'postgres',
         'PASSWORD': 'coderslab',
     }
