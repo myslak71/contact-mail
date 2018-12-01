@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Modify group</title>
-</head>
-<body>
+{% extends 'contact_mail/base.html' %}
+
+{% block title %}
+    Modify group
+{% endblock %}
+
+{% block content %}
     <form method="post">
         <label>
             Name:
@@ -19,8 +19,10 @@
                 {% endfor %}
             </select>
         </label>
-    <button type="submit">Modify group</button>
+        <button type="submit">Modify group</button>
         {% csrf_token %}
     </form>
-</body>
-</html>
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
+{% endblock %}

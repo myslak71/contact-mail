@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add group</title>
-</head>
-<body>
+{% extends 'contact_mail/base.html' %}
+
+{% block title %}
+    Add group
+{% endblock %}
+
+{% block content %}
     <form method="post">
         <input type="text" name="group_name" placeholder="Name">
         <label>
@@ -21,5 +21,4 @@
     {% for message in messages %}
         {{ message }}
     {% endfor %}
-</body>
-</html>
+{% endblock %}

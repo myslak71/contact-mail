@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add new contact</title>
-</head>
-<body>
+{% extends 'contact_mail/base.html' %}
+
+{% block title %}
+    Add new contact
+{% endblock %}
+
+{% block content %}
     <form method="post">
         <fieldset>
             <input type="text" name="name" placeholder="name">
@@ -45,5 +45,4 @@
     {% for message in messages %}
         {{ message }}
     {% endfor %}
-</body>
-</html>
+{% endblock %}

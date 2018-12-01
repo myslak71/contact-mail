@@ -1,10 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Show contact</title>
-</head>
-<body>
+{% extends 'contact_mail/base.html' %}
+
+{% block title %}
+    Show contact
+{% endblock %}
+
+{% block content %}
     <fieldset>
         <label>
             Name:
@@ -68,5 +68,4 @@
     <form action="/modify/{{ contact.id }}" method="get">
         <button type="submit">Modify contact</button>
     </form>
-</body>
-</html>
+{% endblock %}
