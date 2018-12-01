@@ -64,10 +64,64 @@ class BaseView(View, ABC):
         :return:
         '''
         for field in self.FORM_FIELDS:
+            print(request.POST)
             if field == 'contacts':
                 setattr(self, 'contacts', request.POST.getlist('contacts'))
                 continue
             setattr(self, field, request.POST.get(field).strip())
+
+    def _validate_form(self, request, *args, group_id=None):
+        valid = True
+
+        if 'name' in args and 'surname' in args:
+            if not self.name or not self.surname:
+                messages.add_message(request, messages.ERROR, 'Name and surname are required')
+                valid = False
+
+        if 'city' in args and 'street' in args and 'building_number' in args and 'apartment_number' in args:
+            if not self.city or not self.street or not self.building_number or not self.apartment_number:
+                messages.add_message(request, messages.ERROR, 'Inappropriate address')
+                valid = False
+
+        if 'number' in args and 'phone_type' in args:
+            if self.phone_type not in str(PHONE_CHOICES):
+                messages.add_message(request, messages.ERROR, 'Inappropriate phone type value')
+                valid = False
+
+            if not self.number or not check_if_unsigned_int(self.number):
+                messages.add_message(request, messages.ERROR, 'Inappropriate phone number')
+                valid = False
+
+        if 'email_type' in args and 'email_address' in args:
+            if self.email_type not in str(EMAIL_CHOICES):
+                messages.add_message(request, messages.ERROR, 'Inappropriate email type value')
+                valid = False
+
+            if not self.email_address:
+                messages.add_message(request, messages.ERROR, 'Inappropriate email address')
+                valid = False
+
+            if not check_email(self.email_address):
+                messages.add_message(request, messages.ERROR, 'Inappropriate email format')
+                valid = False
+
+        if 'group_name' in args and 'contacts' in args:
+            if not self.group_name:
+                messages.add_message(request, messages.ERROR, "Name is required")
+                valid = False
+
+            if Group.objects.all().filter(name=self.group_name).first() is not None:
+                messages.add_message(request, messages.ERROR, "Group with given name already exists")
+                valid = False
+
+        if 'group_name' in args and 'contacts' in args and group_id is not None:
+            if self.group_name == Group.objects.get(pk=group_id).name:
+                pass
+            elif Group.objects.all().filter(name=self.group_name).first() is not None:
+                messages.add_message(request, messages.ERROR, "Group with given name already exists")
+                valid = False
+
+        return valid
 
 
 class NewContactView(BaseView):
@@ -91,7 +145,7 @@ class NewContactView(BaseView):
     def post(self, request):
         self._get_form_field_values(request)
 
-        if not self._form_valid(request):
+        if not self._validate_form(request, *self.FORM_FIELDS):
             return redirect('/new')
 
         contact = Person.objects.create(name=self.name, surname=self.surname, description=self.description)
@@ -105,35 +159,6 @@ class NewContactView(BaseView):
         contact.save()
         messages.add_message(request, messages.INFO, 'Contact has been added')
         return redirect('/')
-
-    def _form_valid(self, request):
-        valid = True  # adds message for every inappropriate input
-
-        if not self.name or not self.surname:
-            messages.add_message(request, messages.ERROR, 'Name and surname are required')
-            valid = False
-
-        if self.phone_type not in str(PHONE_CHOICES):
-            messages.add_message(request, messages.ERROR, 'Inappropriate phone type value')
-            valid = False
-
-        if not self.number or not check_if_unsigned_int(self.number):
-            messages.add_message(request, messages.ERROR, 'Inappropriate phone number')
-            valid = False
-
-        if self.email_type not in str(EMAIL_CHOICES):
-            messages.add_message(request, messages.ERROR, 'Inappropriate email type value')
-            valid = False
-
-        if not self.email_address:
-            messages.add_message(request, messages.ERROR, 'Inappropriate email address')
-            valid = False
-
-        if not check_email(self.email_address):
-            messages.add_message(request, messages.ERROR, 'Inappropriate email address')
-            valid = False
-
-        return valid
 
 
 class DeleteContactView(View):
@@ -170,23 +195,14 @@ class ModifyContactView(BaseView):
 
         self._get_form_field_values(request)
 
-        if not self._form_valid(request):
-            return redirect('/new')
+        if not self._validate_form(request, *self.FORM_FIELDS):
+            return redirect('/modify/{}'.format(id))
 
         contact.name, contact.surname, contact.description = self.name, self.surname, self.description
         contact.save()
 
         messages.add_message(request, messages.INFO, 'Personal data has been modified')
         return redirect('/modify/{}'.format(contact.id))
-
-    def _form_valid(self, request):
-        valid = True  # adds message for every inappropriate input
-
-        if not self.name or not self.surname:
-            messages.add_message(request, messages.ERROR, 'Name and surname are required')
-            valid = False
-
-        return valid
 
 
 class AddAddressView(BaseView):
@@ -201,27 +217,16 @@ class AddAddressView(BaseView):
 
         self._get_form_field_values(request)
 
-        if not self._form_valid(request):
+        if not self._validate_form(request, *self.FORM_FIELDS):
             return redirect('/modify/{}'.format(id))
 
-        address = Address.objects.create(city=self.city, street=self.street,
+        contact.address = Address.objects.create(city=self.city, street=self.street,
                                          building_number=self.building_number,
                                          apartment_number=self.apartment_number)
-
-        contact.address = address
         contact.save()
 
         messages.add_message(request, messages.INFO, 'Address has been added')
         return redirect('/modify/{}'.format(id))
-
-    def _form_valid(self, request):
-        valid = True
-
-        if not self.city or not self.street or not self.building_number or not self.apartment_number:
-            messages.add_message(request, messages.ERROR, 'Inappropriate address')
-            valid = False
-
-        return valid
 
 
 class RemoveAddressView(View):
@@ -268,7 +273,7 @@ class AddPhoneView(BaseView):
 
     def post(self, request, id):
         self._get_form_field_values(request)
-        if not self._form_valid(request):
+        if not self._validate_form(request, *self.FORM_FIELDS):
             return redirect('/modify/{}'.format(id))
 
         contact = Person.objects.filter(pk=id).first()
@@ -283,26 +288,13 @@ class AddPhoneView(BaseView):
         messages.add_message(request, messages.INFO, 'Phone has been added')
         return redirect('/modify/{}'.format(id))
 
-    def _form_valid(self, request):
-        valid = True
-
-        if self.phone_type not in str(PHONE_CHOICES):
-            messages.add_message(request, messages.ERROR, 'Inappropriate phone type value')
-            valid = False
-
-        if not self.number or not check_if_unsigned_int(self.number):
-            messages.add_message(request, messages.ERROR, 'Inappropriate phone number')
-            valid = False
-
-        return valid
-
 
 class ModifyPhoneView(BaseView):
     FORM_FIELDS = ('phone_type', 'number')
 
     def post(self, request, id, phone_id):
         self._get_form_field_values(request)
-        if not self._form_valid(request):
+        if not self._validate_form(request, *self.FORM_FIELDS):
             return redirect('/modify/{}'.format(id))
 
         contact = Person.objects.filter(pk=id).first()
@@ -322,19 +314,6 @@ class ModifyPhoneView(BaseView):
 
         messages.add_message(request, messages.INFO, 'Phone has been modified')
         return redirect('/modify/{}'.format(id))
-
-    def _form_valid(self, request):
-        valid = True
-
-        if not self.number or not check_if_unsigned_int(self.number):
-            messages.add_message(request, messages.ERROR, 'Inappropriate phone number')
-            valid = False
-
-        if self.phone_type not in str(PHONE_CHOICES):
-            messages.add_message(request, messages.ERROR, 'Inappropriate phone type value')
-            valid = False
-
-        return valid
 
 
 class DeletePhoneView(View):
@@ -362,7 +341,7 @@ class AddEmailView(BaseView):
 
     def post(self, request, id):
         self._get_form_field_values(request)
-        if not self._form_valid(request):
+        if not self._validate_form(request, *self.FORM_FIELDS):
             return redirect('/modify/{}'.format(id))
 
         contact = Person.objects.filter(pk=id).first()
@@ -375,26 +354,13 @@ class AddEmailView(BaseView):
         messages.add_message(request, messages.INFO, 'Email has been added')
         return redirect('/modify/%s' % id)
 
-    def _form_valid(self, request):
-        valid = True
-
-        if self.email_type not in str(EMAIL_CHOICES):
-            messages.add_message(request, messages.ERROR, 'Inappropriate email type value')
-            valid = False
-
-        if not self.email_address or not check_email(self.email_address):
-            messages.add_message(request, messages.ERROR, 'Inappropriate email address')
-            valid = False
-
-        return valid
-
 
 class ModifyEmailView(BaseView):
     FORM_FIELDS = ('email_type', 'email_address')
 
     def post(self, request, id, email_id):
         self._get_form_field_values(request)
-        if not self._form_valid(request):
+        if not self._validate_form(request, *self.FORM_FIELDS):
             return redirect('/modify/{}'.format(id))
 
         contact = Person.objects.filter(pk=id).first()
@@ -409,19 +375,6 @@ class ModifyEmailView(BaseView):
 
         messages.add_message(request, messages.INFO, 'Email has been modified')
         return redirect('/modify/%s' % id)
-
-    def _form_valid(self, request):
-        valid = True
-
-        if self.email_type not in str(EMAIL_CHOICES):
-            messages.add_message(request, messages.ERROR, 'Inappropriate email type value')
-            valid = False
-
-        if not self.email_address or not check_email(self.email_address):
-            messages.add_message(request, messages.ERROR, 'Inappropriate email address')
-            valid = False
-
-        return valid
 
 
 class DeleteEmailView(View):
@@ -449,23 +402,23 @@ class ShowGroupsView(View):
 
 
 class AddGroupView(BaseView):
-    FORM_FIELDS = ('name',
+    FORM_FIELDS = ('group_name',
                    'contacts',
                    )
 
     def get(self, request):
-        contacts = Person.objects.all()
         context = {
-            'contacts': contacts,
+            'contacts': Person.objects.all(),
         }
         return render(request, 'contact_mail/add_group.html', context)
 
     def post(self, request):
         self._get_form_field_values(request)
-        if not self._form_valid(request):
+
+        if not self._validate_form(request, *self.FORM_FIELDS):
             return redirect('/groups/add')
 
-        group = Group.objects.create(name=self.name)
+        group = Group.objects.create(name=self.group_name)
         for contact_id in self.contacts:
             if Person.objects.filter(pk=contact_id).first():
                 contact = Person.objects.get(pk=contact_id)
@@ -473,19 +426,6 @@ class AddGroupView(BaseView):
 
         messages.add_message(request, messages.INFO, "Group has been created")
         return redirect('/groups')
-
-    def _form_valid(self, request):
-        valid = True
-
-        if not self.name:
-            messages.add_message(request, messages.ERROR, "Name is required")
-            valid = False
-
-        if Group.objects.all().filter(name=self.name).first() is not None:
-            messages.add_message(request, messages.ERROR, "Group with given name already exists")
-            valid = False
-
-        return valid
 
 
 class DeleteGroupView(View):
@@ -500,7 +440,7 @@ class DeleteGroupView(View):
 
 
 class ModifyGroupView(BaseView):
-    FORM_FIELDS = ('name',
+    FORM_FIELDS = ('group_name',
                    'contacts',
                    )
 
@@ -522,11 +462,18 @@ class ModifyGroupView(BaseView):
             return redirect('/groups')
 
         self._get_form_field_values(request)
-        if not self._form_valid(request, group_id):
+
+        if not self._validate_form(request, *self.FORM_FIELDS, group_id=group_id):
             return redirect('/groups/modify/{}'.format(group_id))
 
+        if self.group_name == Group.objects.get(pk=group_id).name:
+            pass
+        elif Group.objects.all().filter(name=self.group_name).first() is not None:
+            messages.add_message(request, messages.ERROR, "Group with given name already exists")
+            valid = False
+
         group = Group.objects.get(pk=group_id)
-        group.name = self.name
+        group.name = self.group_name
         group.person_set.clear()
 
         for contact_id in self.contacts:

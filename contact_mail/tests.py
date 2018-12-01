@@ -401,3 +401,6 @@ class ModifyGroup(View):
         messages.add_message(request, messages.INFO, "Group has been modified")
         return redirect('/groups')
 """
+
+if not self._validate_form(request, self.FORM_FIELDS):
+    return redirect('/new')
