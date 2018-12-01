@@ -107,19 +107,19 @@ class BaseView(View, ABC):
                 messages.add_message(request, messages.ERROR, 'Inappropriate email format')
                 valid = False
 
-        if 'group_name' in args and 'contacts' in args and group_id is None:
+        if 'group_name' in args and 'contacts' in args and not group_id:
             if not self.group_name:
                 messages.add_message(request, messages.ERROR, "Name is required")
                 valid = False
 
-            if not Group.objects.all().filter(name=self.group_name).first():
+            if Group.objects.all().filter(name=self.group_name).first():
                 messages.add_message(request, messages.ERROR, "Group with given name already exists")
                 valid = False
 
-        if 'group_name' in args and 'contacts' in args and group_id is not None:
+        if 'group_name' in args and 'contacts' in args and group_id:
             if self.group_name == Group.objects.get(pk=group_id).name:
                 pass
-            elif Group.objects.all().filter(name=self.group_name).first() is not None:
+            elif Group.objects.all().filter(name=self.group_name).first():
                 messages.add_message(request, messages.ERROR, "Group with given name already exists")
                 valid = False
 
