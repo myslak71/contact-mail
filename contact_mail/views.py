@@ -117,6 +117,10 @@ class BaseView(View, ABC):
                 valid = False
 
         if 'group_name' in args and 'contacts' in args and group_id:
+            if not self.group_name:
+                messages.add_message(request, messages.ERROR, "Name is required")
+                valid = False
+
             if self.group_name == Group.objects.get(pk=group_id).name:
                 pass
             elif Group.objects.all().filter(name=self.group_name).first():
@@ -492,7 +496,7 @@ class ModifyGroupView(BaseView):
 
         group.save()
         messages.add_message(request, messages.INFO, "Group has been modified")
-        return redirect('/groups')
+        return redirect('/groups/modify/{}'.format(group_id))
 
     def _form_valid(self, request, group_id):
         valid = True
@@ -503,7 +507,7 @@ class ModifyGroupView(BaseView):
 
         if self.name == Group.objects.get(pk=group_id).name:
             pass
-        elif Group.objects.all().filter(name=self.name).first() is not None:
+        elif Group.objects.all().filter(name=self.name).first():
             messages.add_message(request, messages.ERROR, "Group with given name already exists")
             valid = False
 
@@ -513,7 +517,7 @@ class ModifyGroupView(BaseView):
 class ShowGroupView(View):
     @staticmethod
     def get(request, group_id):
-        if Group.objects.filter(pk=group_id).first() is None:
+        if not Group.objects.filter(pk=group_id).first():
             messages.add_message(request, messages.ERROR, "Group does not exist")
             return redirect('/groups')
         group = Group.objects.get(pk=group_id)
