@@ -13,25 +13,19 @@
                     <a href="/show/{{ contact.id }}">{{ contact.surname }} {{ contact.name }}</a></td>
                 <td>
                     <form method="get" action="/modify/{{ contact.id }}">
-                        <button type="submit">Modify</button>
+                        <button class="btn btn-info" type="submit">Modify</button>
                         {% csrf_token %}
                     </form>
                 </td>
                 <td>
                     <form method="post" action="/delete/{{ contact.id }}">
-                        <button type="submit">Delete</button>
+                        <button class="btn btn-danger" type="submit">Delete</button>
                         {% csrf_token %}
                     </form>
                 </td>
             </tr>
         {% endfor %}
     </table>
-    <form action="/new" method="get">
-        <button type="submit">Add new contact</button>
-    </form>
-    <form action="/groups" method="get">
-        <button type="submit">Groups</button>
-    </form>
     {% if messages %}
         {% for message in messages %}
             {{ message }}

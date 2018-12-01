@@ -11,23 +11,19 @@
                 <td><a href="/groups/show/{{ group.id }}">{{ group.name }}</a></td>
                 <td>
                     <form method="get" action="/groups/modify/{{ group.id }}">
-                        <button type="submit">Modify</button>
+                        <button class="btn btn-info" type="submit">Modify</button>
                         {% csrf_token %}
                     </form>
                 </td>
                 <td>
                     <form method="post" action="/groups/delete/{{ group.id }}">
-                        <button type="submit">Delete</button>
+                        <button class="btn btn-danger" type="submit">Delete</button>
                         {% csrf_token %}
                     </form>
                 </td>
             </tr>
         {% endfor %}
     </table>
-    <form method="get" action="/groups/add">
-        <button type="submit">Add group</button>
-        {% csrf_token %}
-    </form>
     {% for message in messages %}
         {{ message }}
     {% endfor %}

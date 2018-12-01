@@ -1,35 +1,45 @@
-ul, ul li {
-	display: block;
-	list-style: none;
-	margin: 0;
-	padding: 0;
+body {
+    padding-top: 65px;
+    background-color: #ffffff;
 }
 
-ul {
-	position: absolute;
+
+.searchButton {
+    border-radius: 5px;
+    border: #333029;
+    display: inline-block;
+    cursor: pointer;
+    color: #2FBADA;
+    line-height: 1.5px;
+    font-family: "Helvetica Neue", Helvetica, Arial, SansSerif;
+    font-size: 16px;
+    padding: 12px 16px;
+    text-decoration: none;
 }
 
-ul li {
-	float: left;
-	border-width: 0 1px 1px 1px;
-	border-style: solid;
-	border-color: transparent #25b #25b #9ce;
+.allButtons {
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    color: black;
+    line-height: 1.5px;
+    font-family: "Helvetica Neue", Helvetica, Arial, SansSerif;
+    font-size: 16px;
+    padding: 12px 16px;
+    text-decoration: none;
+    background-color: #7dd4e8;
 }
 
-ul a:link, ul a:visited {
-	text-decoration: none;
-	display: block;
-	width: 95px;
-	text-align: center;
-	padding: 5px 0;
-	font-weight: bold;
-	background-color: #27c;
-	color: #def;
-	border-top: 10px solid #25b;
+
+.btn {
+    background-color: #abdde5
+
+}
+.btn:hover
+{
+    background-color: #1f93ad;
 }
 
-ul a:hover {
-	background-color: #28e;
-	color: #fff;
-	border-top: 20px solid #26d;
-}
+/*table, th, td {*/
+    /*border: 1px solid black;*/
+/*}*/

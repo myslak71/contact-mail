@@ -37,7 +37,8 @@ def contact_exist_get(contact_id):
 
 
 class ShowAllContactsView(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         contacts = Person.objects.all().order_by('surname')
         context = {
             'contacts': contacts,
@@ -46,7 +47,8 @@ class ShowAllContactsView(View):
 
 
 class ShowContactView(View):
-    def get(self, request, id):
+    @staticmethod
+    def get(request, id):
         context = {
             'contact': contact_exist_get(id)
         }
@@ -105,12 +107,12 @@ class BaseView(View, ABC):
                 messages.add_message(request, messages.ERROR, 'Inappropriate email format')
                 valid = False
 
-        if 'group_name' in args and 'contacts' in args:
+        if 'group_name' in args and 'contacts' in args and group_id is None:
             if not self.group_name:
                 messages.add_message(request, messages.ERROR, "Name is required")
                 valid = False
 
-            if Group.objects.all().filter(name=self.group_name).first() is not None:
+            if not Group.objects.all().filter(name=self.group_name).first():
                 messages.add_message(request, messages.ERROR, "Group with given name already exists")
                 valid = False
 
@@ -162,7 +164,8 @@ class NewContactView(BaseView):
 
 
 class DeleteContactView(View):
-    def post(self, request, id):
+    @staticmethod
+    def post(request, id):
         contact = Person.objects.filter(pk=id).first()
 
         if not contact:
@@ -221,8 +224,8 @@ class AddAddressView(BaseView):
             return redirect('/modify/{}'.format(id))
 
         contact.address = Address.objects.create(city=self.city, street=self.street,
-                                         building_number=self.building_number,
-                                         apartment_number=self.apartment_number)
+                                                 building_number=self.building_number,
+                                                 apartment_number=self.apartment_number)
         contact.save()
 
         messages.add_message(request, messages.INFO, 'Address has been added')
@@ -230,8 +233,8 @@ class AddAddressView(BaseView):
 
 
 class RemoveAddressView(View):
-
-    def post(self, request, id):
+    @staticmethod
+    def post(request, id):
         contact = Person.objects.filter(pk=id).first()
 
         if not contact:
@@ -250,7 +253,8 @@ class RemoveAddressView(View):
 
 
 class DeleteAddressView(View):
-    def post(self, request, id):
+    @staticmethod
+    def post(request, id):
         contact = Person.objects.filter(pk=id).first()
 
         if not contact:
@@ -317,7 +321,8 @@ class ModifyPhoneView(BaseView):
 
 
 class DeletePhoneView(View):
-    def post(self, request, id, phone_id):
+    @staticmethod
+    def post(request, id, phone_id):
         contact = Person.objects.filter(pk=id).first()
 
         if not contact:
@@ -378,7 +383,8 @@ class ModifyEmailView(BaseView):
 
 
 class DeleteEmailView(View):
-    def post(self, request, id, email_id):
+    @staticmethod
+    def post(request, id, email_id):
         contact = Person.objects.filter(pk=id).first()
 
         if not contact:
@@ -393,7 +399,8 @@ class DeleteEmailView(View):
 
 
 class ShowGroupsView(View):
-    def get(self, request):
+    @staticmethod
+    def get(request):
         groups = Group.objects.all()
         context = {
             'groups': groups,
@@ -429,7 +436,8 @@ class AddGroupView(BaseView):
 
 
 class DeleteGroupView(View):
-    def post(self, request, group_id):
+    @staticmethod
+    def post(request, group_id):
         if not Group.objects.filter(pk=group_id).first():
             messages.add_message(request, messages.ERROR, "Group does not exist")
             return redirect('/groups')
@@ -444,7 +452,8 @@ class ModifyGroupView(BaseView):
                    'contacts',
                    )
 
-    def get(self, request, group_id):
+    @staticmethod
+    def get(request, group_id):
         if Group.objects.filter(pk=group_id).first() is None:
             messages.add_message(request, messages.ERROR, "Group does not exist")
             return redirect('/groups')
@@ -502,7 +511,8 @@ class ModifyGroupView(BaseView):
 
 
 class ShowGroupView(View):
-    def get(self, request, group_id):
+    @staticmethod
+    def get(request, group_id):
         if Group.objects.filter(pk=group_id).first() is None:
             messages.add_message(request, messages.ERROR, "Group does not exist")
             return redirect('/groups')
@@ -513,7 +523,7 @@ class ShowGroupView(View):
 
         else:
             contacts = group.person_set.all().filter(name__contains=request.GET.get('name')).filter(
-                surname__contains='')
+                surname__contains=request.GET.get('surname'))
 
         context = {
             'group': group,
@@ -521,3 +531,19 @@ class ShowGroupView(View):
         }
 
         return render(request, 'contact_mail/show_group.html', context)
+
+
+class SearchContacts(BaseView):
+    @staticmethod
+    def get(request):
+        if not request.GET.get('name') and not request.GET.get('surname'):
+            contacts = Person.objects.all()
+
+        else:
+            contacts = Person.objects.all().filter(name__contains=request.GET.get('name').strip()).filter(
+                surname__contains=request.GET.get('surname').strip())
+
+        context = {
+            'contacts': contacts.order_by('surname', 'name')
+        }
+        return render(request, 'contact_mail/show_all_contacts.html', context)

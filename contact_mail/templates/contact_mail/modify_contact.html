@@ -14,7 +14,7 @@
             <input type="text" name="name" placeholder="Name" value="{{ contact.name }}">
             <input type="text" name="surname" placeholder="Surname" value="{{ contact.surname }}">
             <textarea name="description" placeholder="Descriptions">{{ contact.description }}</textarea>
-            <button type="submit">Modify personal data</button>
+            <button class="btn btn-info" type="submit">Modify personal data</button>
         </fieldset>
         {% csrf_token %}
     </form>
@@ -30,7 +30,7 @@
                    value="{{ contact.address.apartment_number }}">
             <button type="submit">{% if contact.address %}Modify address{% else %}Add address{% endif %}</button>
             {% if contact.address %}
-                <button type="submit" name="delete" value="{{ contact.address.id }}" form="delete">Remove address
+                <button class="btn btn-info" type="submit" name="delete" value="{{ contact.address.id }}" form="delete">Remove address
                 </button>
             {% endif %}
         </fieldset>
@@ -51,11 +51,11 @@
                         <option value="2" {% if phone.type == 2 %}selected{% endif %}>home</option>
                     </select>
                 </label>
-                <button type="submit">Modify phone</button>
+                <button class="btn btn-info" type="submit">Modify phone</button>
                 {% csrf_token %}
             </form>
             <form action="{{ contact.id }}/deletePhone/{{ phone.id }}" method="post">
-                <button type="submit">Delete phone</button>
+                <button class="btn btn-info" type="submit">Delete phone</button>
                 {% csrf_token %}
             </form>
         {% endfor %}
@@ -69,7 +69,7 @@
                     <option value="2">home</option>
                 </select>
             </label>
-            <button type="submit">Add phone</button>
+            <button class="btn btn-info" type="submit">Add phone</button>
             {% csrf_token %}
         </form>
     </fieldset>
@@ -85,11 +85,11 @@
                         <option value="1" {% if email.type == 1 %}selected{% endif %}>company</option>
                     </select>
                 </label>
-                <button type="submit">Modify email</button>
+                <button class="btn btn-info" type="submit">Modify email</button>
                 {% csrf_token %}
             </form>
             <form action="{{ contact.id }}/deleteEmail/{{ email.id }}" method="post">
-                <button type="submit">Delete email</button>
+                <button class="btn btn-info" type="submit">Delete email</button>
                 {% csrf_token %}
             </form>
         {% endfor %}
@@ -102,7 +102,7 @@
                     <option value="1">company</option>
                 </select>
             </label>
-            <button type="submit">Add email</button>
+            <button class="btn btn-info" type="submit">Add email</button>
 
             {% csrf_token %}
         </form>

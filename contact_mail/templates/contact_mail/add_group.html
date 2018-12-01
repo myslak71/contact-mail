@@ -15,7 +15,7 @@
                 {% endfor %}
             </select>
         </label>
-        <button type="submit">Add group</button>
+        <button class="btn btn-info" type="submit">Add group</button>
         {% csrf_token %}
     </form>
     {% for message in messages %}
