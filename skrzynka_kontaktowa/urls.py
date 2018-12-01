@@ -20,8 +20,8 @@ from contact_mail.views import *
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url('^$', ShowAllContactsView.as_view()),
-    url('^new$', NewContactView.as_view()),
+    url('^$', ShowAllContactsView.as_view(), name='contacts'),
+    url('^new$', NewContactView.as_view(), name='new_contact'),
     url('^show/(?P<id>\d+)$', ShowContactView.as_view()),
     url('^delete/(?P<id>\d+)$', DeleteContactView.as_view()),
     url('^modify/(?P<id>\d+)$', ModifyContactView.as_view()),
@@ -34,8 +34,8 @@ urlpatterns = [
     url('^modify/(?P<id>\d+)/modifyEmail/(?P<email_id>\d+)$', ModifyEmailView.as_view()),
     url('^modify/(?P<id>\d+)/addEmail$', AddEmailView.as_view()),
     url('^modify/(?P<id>\d+)/deleteEmail/(?P<email_id>\d+)$', DeleteEmailView.as_view()),
-    url('^groups$', ShowGroupsView.as_view()),
-    url('^groups/add$', AddGroupView.as_view()),
+    url('^groups$', ShowGroupsView.as_view(), name='groups'),
+    url('^groups/add$', AddGroupView.as_view(), name='new_group'),
     url('^groups/delete/(?P<group_id>\d+)$', DeleteGroupView.as_view()),
     url('^groups/modify/(?P<group_id>\d+)$', ModifyGroupView.as_view()),
     url('^groups/show/(?P<group_id>\d+)$', ShowGroupView.as_view()),
