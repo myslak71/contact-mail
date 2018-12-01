@@ -1,0 +1,40 @@
+{% extends 'contact_mail/base.html' %}
+
+{% block title %}
+    Show group
+{% endblock %}
+
+{% block content %}
+    <label>Group name:
+    <input disabled value="{{ group.name }}">
+    </label>
+    <form method="get">
+        <input type="text" name="name" placeholder="name">
+        <input type="text" name="surname" placeholder="surname">
+        <button type="submit">Search</button>
+    </form>
+    <table>
+        <tr>
+            <th scope="col">Name</th>
+            <th scope="col">Surname</th>
+            <th scope="col">City</th>
+            <th scope="col">Street</th>
+            <th scope="col">Address</th>
+            <th scope="col">Apartment number</th>
+        </tr>
+        {% for contact in contacts %}
+            <tr>
+                <td>{{ contact.name }}</td>
+                <td>{{ contact.surname }}</td>
+                <td>{{ contact.address.city }}</td>
+                <td>{{ contact.address.street }}</td>
+                <td>{{ contact.address.building_number }}</td>
+                <td>{{ contact.address.apartment_number }}</td>
+                <td> {% for phone in contact.phone_set.all %}{{ phone.number }}<br>{% endfor %}</td>
+                <td> {% for phone in contact.phone_set.all %}{{ phone.get_type_display }}<br>{% endfor %}</td>
+                <td> {% for email in contact.email_set.all %}{{ email.address }}<br>{% endfor %}</td>
+                <td> {% for email in contact.email_set.all %}{{ email.get_type_display }}<br>{% endfor %}</td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add image</title>
+</head>
+<body>
+    <form method="post">
+        <input type="file" accept="image/jpeg, image/bmp, image/png" name="user_image">
+        <label>
+            Contacts:
+            <select name="contacts">
+                {% for contact in contacts %}
+                    <option value="{{ contact.id }}">{{ contact.name }} {{ contact.surname }}</option>
+                {% endfor %}
+            </select>
+        </label>
+    <button type="submit">Add picture</button>
+        {% csrf_token %}
+    </form>
+</body>
+</html>
