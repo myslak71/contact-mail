@@ -4,8 +4,8 @@ body {
 }
 
 
-.tablePaddingLeft {
-    padding-left: 20px;
+.tablePaddingLeft{
+    margin-left: 15px;
 }
 .searchButton {
     border-radius: 5px;
@@ -142,10 +142,6 @@ body {
     color: #495057;
     background-color: #fff;
     border-radius: 0.25rem;
-}
-
-.unevenRow {
-    background-color: azure;
 }
 
 .footer {

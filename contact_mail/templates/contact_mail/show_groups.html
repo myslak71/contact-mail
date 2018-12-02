@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block content %}
-    <table>
+    <table class="tablePaddingLeft">
         {% for group in groups %}
             <tr>
                 <td><a href="/groups/show/{{ group.id }}">{{ group.name }}</a></td>

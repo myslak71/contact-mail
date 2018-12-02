@@ -107,7 +107,7 @@
     </form>
     </fieldset>
     <form action="{{ contact.id }}/addPicture" method="post" enctype="multipart/form-data" class="form-control">
-        <input type="file" name="picture_file" class="form-control2" accept="image/jpeg image/png">
+        <input type="file" name="picture_file" accept="image/jpeg image/png">
         <button class="btn btn-info" type="submit">Add picture</button>
         {% csrf_token %}
     </form>

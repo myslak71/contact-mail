@@ -125,13 +125,10 @@ STATIC_URL = '/static/'
 TEMPLATE_DIRS = (os.path.join(BASE_DIR, 'templates'),)
 
 THUMBNAIL_MAKER_FORMATS = {
-    'banner':   ('400x300', {'crop': 'center',
-                             'quality': 90}),
     '200x200':    ('200x200',   {'crop': 'center',
                              'quality': 90}),
     '160x160':    ('160x160',   {'crop': 'center',
                              'quality': 90}),
-    'any_name': ('5x277',   {'padding': True})
 }
 
 THUMBNAIL_MAKER_DEBUG = True

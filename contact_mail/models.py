@@ -1,6 +1,5 @@
 from django.db import models
 from thumbnail_maker.fields import ImageWithThumbnailsField
-# Create your models here.
 
 
 class Address(models.Model):
@@ -16,7 +15,7 @@ class Person(models.Model):
     description = models.TextField()
     image = ImageWithThumbnailsField(
         upload_to='users_thumbnails',
-        thumbs=('banner', '50x50'),
+        thumbs=('200x200', '160x160'),
     )
     address = models.ForeignKey(Address, models.SET_NULL, null=True)
     group = models.ManyToManyField('Group')

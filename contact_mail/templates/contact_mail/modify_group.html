@@ -8,8 +8,7 @@
 <form method="post" class="form-control">
     <div class="form-group">
         <input type="text" name="group_name" placeholder="Name" class="form-control standardInput" value="{{ group.name }}">
-
-            <select multiple name="contacts" class="form-control multipleInput">
+            <select multiple name="contacts" class="form-control multipleInput" size="10">
             <option disabled>Contacts</option>
                 {% for contact in contacts %}
                     <option value="{{ contact.id }}"
