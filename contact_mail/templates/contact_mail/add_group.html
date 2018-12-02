@@ -7,7 +7,7 @@
 {% block content %}
     <form method="post" class="form-control">
     <div class="form-group">
-        <input type="text" name="group_name" placeholder="Name" class="form-control standardInput">
+        <input type="text" name="group_name" placeholder="Name" class="form-control standardInput" required>
             <select multiple name="contacts" class="form-control multipleInput" size="10">
             <option disabled>Contacts</option>
                 {% for contact in contacts %}
