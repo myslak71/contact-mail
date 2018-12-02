@@ -23,28 +23,24 @@
                    class="form-control standardInput ">
         </div>
         <div class="form-control">
+
             <input type="number" name="number" placeholder="Phone number" class="form-group standardInput">
-            <label>
-                Type:
-                <select name="phone_type" class="form-group">
-                    <option value="0">mobile</option>
+
+                <select name="phone_type" class="form-control2">
+                    <option value="0" selected>mobile</option>
                     <option value="1">company</option>
                     <option value="2">home</option>
                 </select>
-            </label>
+
         </div>
         <div class="form-control">
             <input class="standardInput" name="email_address" placeholder="Email address" type="email">
-            <label>
-                Type:
-                <select name="email_type">
-                    <option value="0">private</option>
+                <select name="email_type" class="form-control2">
+                    <option value="0" selected>private</option>
                     <option value="1">company</option>
                 </select>
-            </label>
-            <div class="form-control">
+            <div></div>
                 <button class="btn btn-info" type="submit">Add contact</button>
-            </div>
         </div>
         {% csrf_token %}
     </form>
