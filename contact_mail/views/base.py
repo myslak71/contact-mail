@@ -18,7 +18,6 @@ class BaseView(View, ABC):
         :return:
         '''
         for field in self.FORM_FIELDS:
-            print(request.POST)
             if field == 'contacts':
                 setattr(self, 'contacts', request.POST.getlist('contacts'))
                 continue
