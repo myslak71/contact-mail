@@ -8,6 +8,7 @@ body {
     margin-left: 15px;
 }
 
+
 .searchButton {
     border-radius: 5px;
     border: #333029;
@@ -22,7 +23,7 @@ body {
 }
 
 .form-control-autofit {
-  width: 15%;
+    width: 15%;
 }
 
 .allButtons {
@@ -162,3 +163,5 @@ textarea {
     float: right;
     padding-right: 65rem;
 }
+
+
