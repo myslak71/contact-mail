@@ -21,6 +21,9 @@ class BaseView(View, ABC):
             if field == 'contacts':
                 setattr(self, 'contacts', request.POST.getlist('contacts'))
                 continue
+            if field == 'picture_file':
+                setattr(self, 'picture_file', request.FILES['picture_file'])
+                continue
             setattr(self, field, request.POST.get(field).strip())
 
     def _validate_form(self, request, *args, group_id=None):
@@ -76,6 +79,11 @@ class BaseView(View, ABC):
                 pass
             elif Group.objects.all().filter(name=self.group_name).first():
                 messages.add_message(request, messages.ERROR, "Group with given name already exists")
+                valid = False
+
+        if 'picture_file' in args:
+            if not self.picture_file:
+                messages.add_message(request, messages.ERROR, 'You need to specify a file path.')
                 valid = False
 
         return valid

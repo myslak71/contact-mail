@@ -5,14 +5,16 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <div class="form-control">
-            <label class="sr-only" for="nameInput">Name</label>
             <input type="text" name="name" placeholder="Name"
                    class="form-control standardInput" required>
             <input type="text" name="surname" placeholder="Surname" class="form-control standardInput" required>
             <textarea name="description" placeholder="Description"
                       class="form-control standardInput "></textarea>
+                Picture
+            <input type="file" name="picture_file" accept="image/jpeg image/png" required
+                   class="form-control standardInput" id="picture">
         </div>
         <div class="form-control">
             <input type="text" name="city" placeholder="City" class="form-control standardInput" required>
@@ -42,6 +44,7 @@
                 <button class="btn btn-info" type="submit">Add contact</button>
             </div>
         </div>
+
         {% csrf_token %}
     </form>
     {% for message in messages %}
