@@ -4,6 +4,9 @@ body {
 }
 
 
+.tablePaddingLeft {
+    padding-left: 20px;
+}
 .searchButton {
     border-radius: 5px;
     border: #333029;
@@ -148,4 +151,13 @@ body {
 .footer {
     height: 5%;
     padding: 0px;
+}
+
+textarea {
+    resize: none;
+}
+
+.contactImage {
+    float: right;
+    padding-right: 65rem;
 }

@@ -16,6 +16,8 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 from django.urls import path
+from django.conf import settings
+from django.conf.urls.static import static
 
 from contact_mail.views import *
 
@@ -35,11 +37,14 @@ urlpatterns = [
     url('^modify/(?P<id>\d+)/modifyEmail/(?P<email_id>\d+)$', ModifyEmailView.as_view()),
     url('^modify/(?P<id>\d+)/addEmail$', AddEmailView.as_view()),
     url('^modify/(?P<id>\d+)/deleteEmail/(?P<email_id>\d+)$', DeleteEmailView.as_view()),
+    url('^modify/(?P<id>\d+)/addPicture$', AddPictureView.as_view()),
     url('^groups$', ShowGroupsView.as_view(), name='groups'),
     url('^groups/add$', AddGroupView.as_view(), name='new_group'),
     url('^groups/delete/(?P<group_id>\d+)$', DeleteGroupView.as_view()),
     url('^groups/modify/(?P<group_id>\d+)$', ModifyGroupView.as_view()),
     url('^groups/show/(?P<group_id>\d+)$', ShowGroupView.as_view()),
     url('^search$', SearchContacts.as_view()),
-    # url('^add_picture$', AddPicture.as_view()),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
