@@ -5,17 +5,19 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-        <input type="text" name="group_name" placeholder="Name">
-        <label>
-            Contacts:
-            <select multiple name="contacts">
+    <form method="post" class="form-control">
+    <div class="form-group">
+        <input type="text" name="group_name" placeholder="Name" class="form-control standardInput">
+
+            <select multiple name="contacts" class="form-control multipleInput">
+            <option disabled>Contacts</option>
                 {% for contact in contacts %}
                     <option value="{{ contact.id }}">{{ contact.name }} {{ contact.surname }}</option>
                 {% endfor %}
             </select>
         </label>
         <button class="btn btn-info" type="submit">Add group</button>
+    </div>
         {% csrf_token %}
     </form>
     {% for message in messages %}

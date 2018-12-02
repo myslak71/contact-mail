@@ -6,31 +6,35 @@
 
 {% block content %}
     <form method="post">
-        <fieldset>
-            <input type="text" name="name" placeholder="name">
-            <input type="text" name="surname" placeholder="surname">
-            <textarea name="description" placeholder="description"></textarea>
-        </fieldset>
-        <fieldset>
-            Address:
-            <input type="text" name="city" placeholder="City">
-            <input type="text" name="street" placeholder="Street"">
-            <input type="text" name="building_number" placeholder="Building number">
-            <input type="text" name="apartment_number" placeholder="Apartment number">
-        </fieldset>
-        <fieldset>
-            <input type="number" name="number" placeholder="Phone number"">
+        <div class="form-control">
+            <label class="sr-only" for="nameInput">Name</label>
+            <input type="text" name="name" placeholder="name"
+                   class="form-control standardInput">
+            <input type="text" name="surname" placeholder="surname" class="form-control standardInput">
+            <textarea name="description" placeholder="description"
+                      class="form-control standardInput "></textarea>
+        </div>
+        <div class="form-control">
+            <input type="text" name="city" placeholder="City" class="form-control standardInput">
+            <input type="text" name="street" placeholder="Street" class="form-control standardInput">
+            <input type="text" name="building_number" placeholder="Building number"
+                   class="form-control standardInput ">
+            <input type="text" name="apartment_number" placeholder="Apartment number"
+                   class="form-control standardInput ">
+        </div>
+        <div class="form-control">
+            <input type="number" name="number" placeholder="Phone number" class="form-group standardInput">
             <label>
                 Type:
-                <select name="phone_type">
+                <select name="phone_type" class="form-group">
                     <option value="0">mobile</option>
                     <option value="1">company</option>
                     <option value="2">home</option>
                 </select>
             </label>
-        </fieldset>
-        <fieldset>
-            <input type="email" name="email_address" placeholder="Email address">
+        </div>
+        <div class="form-control">
+            <input class="standardInput" name="email_address" placeholder="Email address" type="email">
             <label>
                 Type:
                 <select name="email_type">
@@ -38,8 +42,10 @@
                     <option value="1">company</option>
                 </select>
             </label>
-        </fieldset>
-        <button class="btn btn-info" type="submit">Add contact</button>
+            <div class="form-control">
+                <button class="btn btn-info" type="submit">Add contact</button>
+            </div>
+        </div>
         {% csrf_token %}
     </form>
     {% for message in messages %}
