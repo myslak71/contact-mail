@@ -20,7 +20,6 @@
         </div>
         {% csrf_token %}
     </form>
-
     <form action="{{ contact.id }}/addAddress" method="post">
         <div class="form-control">
             Address:
@@ -64,24 +63,23 @@
     {% endfor %}
     <form action="{{ contact.id }}/addPhone" method="post" class="form-control2">
         <input type="number" name="number" placeholder="Phone number" class="form-control2">
-
         <select name="phone_type" class="form-control2">
             <option value="0" selected>mobile</option>
             <option value="1">company</option>
             <option value="2">home</option>
         </select>
-
         <button class="btn btn-info" type="submit">Add phone</button>
         {% csrf_token %}
     </form>
-   <div class="myDiv">Email:</div>
+    <div class="myDiv">Email:</div>
     {% for email in contact.email_set.all %}
         <form action="{{ contact.id }}/modifyEmail/{{ email.id }}" method="post" class="form-control2">
-            <input type="email" name="email_address" placeholder="Email address" value="{{ email.address }}" class="form-control2">
-                <select name="email_type" class="form-control2">
-                    <option value="0" {% if email.type == 0 %}selected{% endif %}>private</option>
-                    <option value="1" {% if email.type == 1 %}selected{% endif %}>company</option>
-                </select>
+            <input type="email" name="email_address" placeholder="Email address" value="{{ email.address }}"
+                   class="form-control2">
+            <select name="email_type" class="form-control2">
+                <option value="0" {% if email.type == 0 %}selected{% endif %}>private</option>
+                <option value="1" {% if email.type == 1 %}selected{% endif %}>company</option>
+            </select>
             <button class="btn btn-info" type="submit">Modify email</button>
             {% csrf_token %}
         </form>
@@ -91,15 +89,13 @@
         </form>
         <div></div>
     {% endfor %}
-
     <form action="{{ contact.id }}/addEmail" method="post" class="form-control2">
         <input type="email" name="email_address" placeholder="Email address" class="form-control2">
-            <select name="email_type" class="form-control2">
-                <option value="0" selected>private</option>
-                <option value="1">company</option>
-            </select>
+        <select name="email_type" class="form-control2">
+            <option value="0" selected>private</option>
+            <option value="1">company</option>
+        </select>
         <button class="btn btn-info" type="submit">Add email</button>
-
         {% csrf_token %}
     </form>
     </fieldset>

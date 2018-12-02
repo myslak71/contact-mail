@@ -6,7 +6,7 @@
 
 {% block content %}
     <form class="form-control">
-    <input disabled value="{{ group.name }}" class="form-control standardInput">
+        <input disabled value="{{ group.name }}" class="form-control standardInput">
     </form>
     <form method="get" class="form-control2">
         <input type="text" name="name" placeholder="name">
@@ -25,7 +25,6 @@
             <th scope="col">Phone type</th>
             <th scope="col">Emaill Address</th>
             <th scope="col">Emaill Type</th>
-
         </tr>
         {% for contact in contacts %}
             <tr>

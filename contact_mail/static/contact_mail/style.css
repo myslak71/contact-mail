@@ -141,16 +141,6 @@ body {
     border-radius: 0.25rem;
 }
 
-/*.groupSearchTable th, td{*/
-/**/
-/*border: 1px solid black;*/
-/**/
-/*}*/
-/**/
-/*.contactTable th, td {*/
-    /*border: 0px;*/
-/*}*/
-
 .unevenRow {
     background-color: azure;
 }
