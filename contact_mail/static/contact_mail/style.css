@@ -125,7 +125,7 @@ body {
 
 .multipleInput {
     width: 15%;
-    height: 10%;
+    height: 20%;
 }
 
 .myDiv {
@@ -143,4 +143,8 @@ body {
 
 .unevenRow {
     background-color: azure;
+}
+
+.footer {
+    height: 5%;
 }

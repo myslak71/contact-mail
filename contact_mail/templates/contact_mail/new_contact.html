@@ -8,10 +8,10 @@
     <form method="post">
         <div class="form-control">
             <label class="sr-only" for="nameInput">Name</label>
-            <input type="text" name="name" placeholder="name"
+            <input type="text" name="name" placeholder="Name"
                    class="form-control standardInput">
-            <input type="text" name="surname" placeholder="surname" class="form-control standardInput">
-            <textarea name="description" placeholder="description"
+            <input type="text" name="surname" placeholder="Surname" class="form-control standardInput">
+            <textarea name="description" placeholder="Description"
                       class="form-control standardInput "></textarea>
         </div>
         <div class="form-control">
@@ -22,25 +22,22 @@
             <input type="text" name="apartment_number" placeholder="Apartment number"
                    class="form-control standardInput ">
         </div>
-        <div class="form-control">
-
-            <input type="number" name="number" placeholder="Phone number" class="form-group standardInput">
-
+        <div class="form-control2">
+            <input type="number" name="number" placeholder="Phone number" class="form-control">
                 <select name="phone_type" class="form-control2">
                     <option value="0" selected>mobile</option>
                     <option value="1">company</option>
                     <option value="2">home</option>
                 </select>
-
         </div>
-        <div class="form-control">
-            <input class="standardInput" name="email_address" placeholder="Email address" type="email">
+        <div></div>
+        <div class="form-control2">
+            <input class="form-control standardInput" name="email_address" placeholder="Email address" type="email">
                 <select name="email_type" class="form-control2">
                     <option value="0" selected>private</option>
                     <option value="1">company</option>
                 </select>
-            <div></div>
-                <button class="btn btn-info" type="submit">Add contact</button>
+            <div class="form-control"><button class="btn btn-info" type="submit">Add contact</button></div>
         </div>
         {% csrf_token %}
     </form>

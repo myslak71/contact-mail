@@ -7,11 +7,11 @@
 {% block content %}
     <form>
         <div class="form-control">
-            <input type="text" name="name" placeholder="Name" value="{{ contact.name }}"
+            <input type="text" placeholder="Name" value="{{ contact.name }}"
                    class="form-control standardInput" disabled>
-            <input type="text" name="surname" placeholder="Surname" value="{{ contact.surname }}"
+            <input type="text" placeholder="Surname" value="{{ contact.surname }}"
                    class="form-control standardInput" disabled>
-            <textarea name="description" placeholder="Descriptions"
+            <textarea placeholder="Descriptions"
                       class="form-control standardInput" disabled>{{ contact.description }}</textarea>
         </div>
         {% csrf_token %}
@@ -19,13 +19,13 @@
     <form>
         <div class="form-control">
             Address:
-            <input type="text" name="city" placeholder="City" value="{{ contact.address.city }}"
+            <input type="text" placeholder="City" value="{{ contact.address.city }}"
                    class="form-control standardInput" disabled>
-            <input type="text" name="street" placeholder="Street" value="{{ contact.address.street }}"
+            <input type="text" placeholder="Street" value="{{ contact.address.street }}"
                    class="form-control standardInput" disabled>
-            <input type="text" name="building_number" placeholder="Building number"
+            <input type="text" placeholder="Building number"
                    value="{{ contact.address.building_number }}" class="form-control standardInput" disabled>
-            <input type="text" name="apartment_number" placeholder="Apartment number"
+            <input type="text" placeholder="Apartment number"
                    value="{{ contact.address.apartment_number }}" class="form-control standardInput" disabled>
         </div>
         {% csrf_token %}
@@ -33,7 +33,7 @@
     <div class="myDiv">Phone:</div>
     {% for phone in contact.phone_set.all %}
         <form class="form-control2">
-            <input type="number" name="number" placeholder="Phone number" value="{{ phone.number }}"
+            <input type="number" placeholder="Phone number" value="{{ phone.number }}"
                    class="form-control2" disabled>
             <input class="form-control2" placeholder="Phone type" value="{{ phone.get_type_display }}">
             {% csrf_token %}
