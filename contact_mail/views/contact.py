@@ -38,6 +38,7 @@ class NewContactView(BaseView):
                    'number',
                    'email_type',
                    'email_address',
+                   'picture_file',
                    )
 
     @staticmethod
@@ -58,6 +59,7 @@ class NewContactView(BaseView):
         Phone.objects.create(number=self.number, type=self.phone_type, person=contact)
         Email.objects.create(address=self.email_address, type=self.email_type, person=contact)
 
+        contact.image = self.picture_file
         contact.save()
         messages.add_message(request, messages.INFO, 'Contact has been added')
         return redirect('/')

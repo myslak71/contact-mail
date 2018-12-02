@@ -4,6 +4,9 @@ from contact_mail.utils import *
 
 
 class UtilsTest(TestCase):
+    def tearDown(self):
+        Person.objects.all().delete()
+
     def test_valid_email(self):
         self.assertTrue(check_email('test@mail.com'))
 
