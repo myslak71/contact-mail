@@ -1,36 +1,43 @@
 {% extends 'contact_mail/base.html' %}
+{% load thumbnail_maker %}
 
 {% block title %}
     Modify contact
 {% endblock %}
 
 {% block content %}
+    <div></div>
     <form method="post" action="{{ contact.id }}/removeAddress" id="delete">
         {% csrf_token %}
     </form>
-    <form method="post">
-        <div class="form-control">
-            <input type="text" name="name" placeholder="Name" value="{{ contact.name }}"
-                   class="form-control standardInput">
-            <input type="text" name="surname" placeholder="Surname" value="{{ contact.surname }}"
-                   class="form-control standardInput">
-            <textarea name="description" placeholder="Descriptions"
-                      class="form-control standardInput">{{ contact.description }}</textarea>
-            <button class="btn btn-info" type="submit">Modify personal data</button>
-        </div>
+    <div class="contactImage">
+        {% usethumbnail contact.image "200x200" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endusethumbnail %}
+    </div>
+    <form method="post" class="form-control">
+        <input type="text" name="name" placeholder="Name" value="{{ contact.name }}"
+               class="form-control standardInput" required>
+        <div style="float: none"></div>
+        <input type="text" name="surname" placeholder="Surname" value="{{ contact.surname }}"
+               class="form-control standardInput" required>
+        <textarea name="description" placeholder="Description"
+                  class="form-control standardInput">{{ contact.description }}</textarea>
+        <button class="btn btn-info" type="submit">Modify personal data</button>
         {% csrf_token %}
     </form>
+
     <form action="{{ contact.id }}/addAddress" method="post">
         <div class="form-control">
             Address:
             <input type="text" name="city" placeholder="City" value="{{ contact.address.city }}"
-                   class="form-control standardInput">
+                   class="form-control standardInput" required>
             <input type="text" name="street" placeholder="Street" value="{{ contact.address.street }}"
-                   class="form-control standardInput">
+                   class="form-control standardInput" required>
             <input type="text" name="building_number" placeholder="Building number"
-                   value="{{ contact.address.building_number }}" class="form-control standardInput">
+                   value="{{ contact.address.building_number }}" class="form-control standardInput" required>
             <input type="text" name="apartment_number" placeholder="Apartment number"
-                   value="{{ contact.address.apartment_number }}" class="form-control standardInput">
+                   value="{{ contact.address.apartment_number }}" class="form-control standardInput" required>
             <button type="submit" class="btn btn-info">{% if contact.address %}Modify address{% else %}Add
                 address{% endif %}</button>
             {% if contact.address %}
@@ -46,7 +53,7 @@
     {% for phone in contact.phone_set.all %}
         <form action="{{ contact.id }}/modifyPhone/{{ phone.id }}" method="post" class="form-control2">
             <input type="number" name="number" placeholder="Phone number" value="{{ phone.number }}"
-                   class="form-control2">
+                   class="form-control2" required>
             <select name="phone_type" class="form-control2">
                 <option value="0" {% if phone.type == 0 %}selected{% endif %}>mobile</option>
                 <option value="1" {% if phone.type == 1 %}selected{% endif %}>company</option>
@@ -62,7 +69,7 @@
         <div></div>
     {% endfor %}
     <form action="{{ contact.id }}/addPhone" method="post" class="form-control2">
-        <input type="number" name="number" placeholder="Phone number" class="form-control2">
+        <input type="number" name="number" placeholder="Phone number" class="form-control2" required>
         <select name="phone_type" class="form-control2">
             <option value="0" selected>mobile</option>
             <option value="1">company</option>
@@ -75,7 +82,7 @@
     {% for email in contact.email_set.all %}
         <form action="{{ contact.id }}/modifyEmail/{{ email.id }}" method="post" class="form-control2">
             <input type="email" name="email_address" placeholder="Email address" value="{{ email.address }}"
-                   class="form-control2">
+                   class="form-control2" required>
             <select name="email_type" class="form-control2">
                 <option value="0" {% if email.type == 0 %}selected{% endif %}>private</option>
                 <option value="1" {% if email.type == 1 %}selected{% endif %}>company</option>
@@ -90,7 +97,7 @@
         <div></div>
     {% endfor %}
     <form action="{{ contact.id }}/addEmail" method="post" class="form-control2">
-        <input type="email" name="email_address" placeholder="Email address" class="form-control2">
+        <input type="email" name="email_address" placeholder="Email address" class="form-control2" required>
         <select name="email_type" class="form-control2">
             <option value="0" selected>private</option>
             <option value="1">company</option>
@@ -99,6 +106,11 @@
         {% csrf_token %}
     </form>
     </fieldset>
+    <form action="{{ contact.id }}/addPicture" method="post" enctype="multipart/form-data" class="form-control">
+        <input type="file" name="picture_file" accept="image/jpeg image/png" required>
+        <button class="btn btn-info" type="submit">Add picture</button>
+        {% csrf_token %}
+    </form>
     {% if messages %}
         {% for message in messages %}
             {{ message }}
@@ -106,3 +118,4 @@
     {% endif %}
     {{ message }}
 {% endblock %}
+

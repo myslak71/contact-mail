@@ -1,10 +1,16 @@
 {% extends 'contact_mail/base.html' %}
+{% load thumbnail_maker %}
 
 {% block title %}
     Show contact
 {% endblock %}
 
 {% block content %}
+    <div class="contactImage">
+        {% usethumbnail contact.image "160x160" as im %}
+            <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+        {% endusethumbnail %}
+    </div>
     <form>
         <div class="form-control">
             <input type="text" placeholder="Name" value="{{ contact.name }}"
@@ -48,9 +54,8 @@
         </form>
         <div></div>
     {% endfor %}
-
-    <form action="/modify/{{ contact.id }}" method="get">
-        <button class="btn btn-info" type="submit">Modify contact</button>
+    <form action="/modify/{{ contact.id }}" method="get" class="form-control2">
+        <button class="btn btn-info for" type="submit">Modify contact</button>
     </form>
     {% for message in messages %}
         {{ message }}

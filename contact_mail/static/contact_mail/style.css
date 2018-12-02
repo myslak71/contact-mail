@@ -4,6 +4,9 @@ body {
 }
 
 
+.tablePaddingLeft{
+    margin-left: 15px;
+}
 .searchButton {
     border-radius: 5px;
     border: #333029;
@@ -141,11 +144,16 @@ body {
     border-radius: 0.25rem;
 }
 
-.unevenRow {
-    background-color: azure;
-}
-
 .footer {
     height: 5%;
     padding: 0px;
+}
+
+textarea {
+    resize: none;
+}
+
+.contactImage {
+    float: right;
+    padding-right: 65rem;
 }

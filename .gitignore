@@ -3,4 +3,4 @@
 .Coderslab/
 *.pyc
 .migrations/
-.coverage
+

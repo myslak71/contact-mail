@@ -4,3 +4,4 @@ from .email import *
 from .group import *
 from .phone import *
 from .search import *
+from .picture import *
