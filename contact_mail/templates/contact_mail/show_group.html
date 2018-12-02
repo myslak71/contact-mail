@@ -5,15 +5,15 @@
 {% endblock %}
 
 {% block content %}
-    <label>Group name:
-    <input disabled value="{{ group.name }}">
-    </label>
-    <form method="get">
+    <form class="form-control">
+    <input disabled value="{{ group.name }}" class="form-control standardInput">
+    </form>
+    <form method="get" class="form-control2">
         <input type="text" name="name" placeholder="name">
         <input type="text" name="surname" placeholder="surname">
         <button class="btn btn-info" type="submit">Search</button>
     </form>
-    <table>
+    <table class="table table-striped table-info">
         <tr>
             <th scope="col">Name</th>
             <th scope="col">Surname</th>
@@ -21,6 +21,11 @@
             <th scope="col">Street</th>
             <th scope="col">Address</th>
             <th scope="col">Apartment number</th>
+            <th scope="col">Phone number</th>
+            <th scope="col">Phone type</th>
+            <th scope="col">Emaill Address</th>
+            <th scope="col">Emaill Type</th>
+
         </tr>
         {% for contact in contacts %}
             <tr>

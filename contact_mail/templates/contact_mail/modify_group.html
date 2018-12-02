@@ -5,21 +5,20 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
-        <label>
-            Name:
-            <input type="text" name="group_name" value="{{ group.name }}">
-        </label>
-        <label>
-            Contacts:
-            <select multiple name="contacts">
+<form method="post" class="form-control">
+    <div class="form-group">
+        <input type="text" name="group_name" placeholder="Name" class="form-control standardInput" value="{{ group.name }}">
+
+            <select multiple name="contacts" class="form-control multipleInput">
+            <option disabled>Contacts</option>
                 {% for contact in contacts %}
                     <option value="{{ contact.id }}"
                             {% if group in contact.group.all %}selected{% endif %}>{{ contact.name }} {{ contact.surname }}</option>
                 {% endfor %}
             </select>
         </label>
-        <button type="submit">Modify group</button>
+        <button class="btn btn-info" type="submit">Edit group</button>
+    </div>
         {% csrf_token %}
     </form>
     {% for message in messages %}

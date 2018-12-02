@@ -5,67 +5,54 @@
 {% endblock %}
 
 {% block content %}
-    <fieldset>
-        <label>
-            Name:
-            <input type="text" disabled value="{{ contact.name }}"
-        </label>
-        <label>
-            Surname:
-            <input type="text" disabled value="{{ contact.surname }}"
-        </label>
-        <label>
-            Description:
-            <textarea disabled>{{ contact.description }}</textarea>
-        </label>
-    </fieldset>
-    <fieldset>
-        <label>
-            City:
-            <input type="text" disabled value="{{ contact.address.city }}"
-        </label>
-        <label>
-            Street:
-            <input type="text" disabled value="{{ contact.address.street }}"
-        </label>
-        <label>
+    <form>
+        <div class="form-control">
+            <input type="text" name="name" placeholder="Name" value="{{ contact.name }}"
+                   class="form-control standardInput" disabled>
+            <input type="text" name="surname" placeholder="Surname" value="{{ contact.surname }}"
+                   class="form-control standardInput" disabled>
+            <textarea name="description" placeholder="Descriptions"
+                      class="form-control standardInput" disabled>{{ contact.description }}</textarea>
+        </div>
+        {% csrf_token %}
+    </form>
+    <form>
+        <div class="form-control">
             Address:
-            <input type="text" disabled value="{{ contact.address.building_number }}"
-        </label>
-        <label>
-            Apartment number:
-            <input type="text" disabled value="{{ contact.address.apartment_number }}"
-        </label>
-    </fieldset>
-    {% if contact.phone_set.all %}
-        <fieldset>
-            {% for phone in contact.phone_set.all %}
-                <label>
-                    Number:
-                    <input type="number" step="1" disabled value="{{ phone.number }}">
-                </label>
-                <label>
-                    Type:
-                    <input type="text" disabled value="{{ phone.get_type_display }}">
-                </label>
-            {% endfor %}
-        </fieldset>
-    {% endif %}
-    {% if contact.email_set.all %}
-        <fieldset>
-            {% for email in contact.email_set.all %}
-                <label>
-                    Email address:
-                    <input type="text" step="1" disabled value="{{ email.address }}">
-                </label>
-                <label>
-                    Type:
-                    <input type="text" disabled value="{{ email.get_type_display }}">
-                </label>
-            {% endfor %}
-        </fieldset>
-    {% endif %}
+            <input type="text" name="city" placeholder="City" value="{{ contact.address.city }}"
+                   class="form-control standardInput" disabled>
+            <input type="text" name="street" placeholder="Street" value="{{ contact.address.street }}"
+                   class="form-control standardInput" disabled>
+            <input type="text" name="building_number" placeholder="Building number"
+                   value="{{ contact.address.building_number }}" class="form-control standardInput" disabled>
+            <input type="text" name="apartment_number" placeholder="Apartment number"
+                   value="{{ contact.address.apartment_number }}" class="form-control standardInput" disabled>
+        </div>
+        {% csrf_token %}
+    </form>
+    <div class="myDiv">Phone:</div>
+    {% for phone in contact.phone_set.all %}
+        <form class="form-control2">
+            <input type="number" name="number" placeholder="Phone number" value="{{ phone.number }}"
+                   class="form-control2" disabled>
+            <input class="form-control2" placeholder="Phone type" value="{{ phone.get_type_display }}">
+            {% csrf_token %}
+        </form>
+        <div></div>
+    {% endfor %}
+    <div class="myDiv">Email:</div>
+    {% for email in contact.email_set.all %}
+        <form class="form-control2">
+            <input type="email" placeholder="Email address" value="{{ email.address }}" class="form-control2" disabled>
+            <input type="email" value="{{ email.address }}" disabled>
+        </form>
+        <div></div>
+    {% endfor %}
+
     <form action="/modify/{{ contact.id }}" method="get">
         <button class="btn btn-info" type="submit">Modify contact</button>
     </form>
+    {% for message in messages %}
+        {{ message }}
+    {% endfor %}
 {% endblock %}
