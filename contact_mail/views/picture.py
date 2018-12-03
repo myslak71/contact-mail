@@ -1,7 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import render, redirect
+from django.views import View
 from contact_mail.models import Group, Person
-from contact_mail.views.base import BaseView
 
 
 class AddPictureView(BaseView):
@@ -19,4 +19,5 @@ class AddPictureView(BaseView):
             return redirect('/')
         contact.image = self.picture_file
         contact.save()
+        
         return redirect('/modify/{}'.format(id))
