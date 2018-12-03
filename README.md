@@ -6,10 +6,10 @@ Django web app. Allows user to create, modify, delete contacts and groups
 
 
 ### Installing
-'''python
+```python
 git clone https://github.com/miesorozec/skrzynka_kontaktowa.git
 pip install requirements.txt
-'''
+```
 ### Built with
 * Django
 * Bootstrap
