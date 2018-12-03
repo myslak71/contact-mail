@@ -147,7 +147,8 @@ body {
 
 .footer {
     height: 5%;
-    padding: 0px;
+    /*padding: 0px;*/
+    padding-bottom: 30px;
 }
 
 textarea {
@@ -156,7 +157,11 @@ textarea {
 
 .contactImage {
     float: right;
-    padding-right: 65rem;
+    padding-right: 60%;
+}
+
+body {
+    margin-bottom: 50px;
 }
 
 

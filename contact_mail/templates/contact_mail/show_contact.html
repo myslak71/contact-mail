@@ -40,8 +40,8 @@
     {% for phone in contact.phone_set.all %}
         <form class="form-control2">
             <input type="number" placeholder="Phone number" value="{{ phone.number }}"
-                   class="form-control2" disabled>
-            <input class="form-control2" placeholder="Phone type" value="{{ phone.get_type_display }}">
+                   class="form-control form-control2" disabled>
+            <input class="form-control form-control2" placeholder="Phone type" value="{{ phone.get_type_display }}" disabled>
             {% csrf_token %}
         </form>
         <div></div>
@@ -49,8 +49,8 @@
     <div class="myDiv">Email:</div>
     {% for email in contact.email_set.all %}
         <form class="form-control2">
-            <input type="email" placeholder="Email address" value="{{ email.address }}" class="form-control2" disabled>
-            <input type="email" value="{{ email.address }}" disabled>
+            <input type="email" placeholder="Email address" value="{{ email.address }}" class="form-control" disabled>
+            <input type="text" value="{{ email.get_type_display }}" class="form-control form-control2" disabled>
         </form>
         <div></div>
     {% endfor %}
