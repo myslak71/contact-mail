@@ -1,6 +1,6 @@
 .idea
 .venv
-.Coderslab/
+Coderslab/
 *.pyc
-.migrations/
-
+venv36/
+media/
