@@ -1,5 +1,5 @@
 # Skrzynka kontaktowa 
-[![Build Status](https://travis-ci.org/myslak71/contact_mail.svg?branch=master)](https://travis-ci.org/myslak71/contact_mail)[![Requirements Status](https://requires.io/github/miesorozec/skrzynka_kontaktowa/requirements.svg?branch=master)](https://requires.io/github/miesorozec/skrzynka_kontaktowa/requirements/?branch=master)
+[![Build Status](https://travis-ci.org/myslak71/contact_mail.svg?branch=master)](https://travis-ci.org/myslak71/contact_mail)[![Requirements Status](https://requires.io/github/myslak71/contact_mail/requirements.svg?branch=master)](https://requires.io/github/myslak71/contact_mail/requirements/?branch=master)
 ___
 Django web app. Allows user to create, modify, delete contacts and groups
 
