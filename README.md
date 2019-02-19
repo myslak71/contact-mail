@@ -1,4 +1,4 @@
-# Skrzynka kontaktowa 
+# Contact mail
 [![Build Status](https://travis-ci.org/myslak71/contact_mail.svg?branch=master)](https://travis-ci.org/myslak71/contact_mail)[![Requirements Status](https://requires.io/github/myslak71/contact_mail/requirements.svg?branch=master)](https://requires.io/github/myslak71/contact_mail/requirements/?branch=master)
 ___
 Django web app. Allows user to create, modify, delete contacts and groups
